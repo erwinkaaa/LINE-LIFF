@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ewing LIFF</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="my_style.css">
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<div class="navbar-nav mx-auto">
+				<a class="nav-item nav-link" href="index.html">Movie</a>
+				<a class="nav-item nav-link active" href="tv.html">TV Shows</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						My Favorite
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="fav_movie.html">Movie</a>
+						<a class="dropdown-item" href="fav_tv.html">TV Shows</a>
+					</div>
+				</li>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-4">
+		<h1>TV Shows</h1>
+		<div class="row mt-3" id="inflate_here">
+		</div>
+		<button class="btn btn-primary col-12" id="seemore" hidden="">See More</button>
+		<button style="display:block;
+		height: 50px;
+		width: 50px;
+		margin-right: 16px;
+		margin-bottom: 16px;
+		border-radius: 50%;
+		border: 1px solid red;position: fixed;
+		bottom: 0;
+		right: 0;" id="scrolltotop">Top</button>
+	</div>
+	
+	<!-- Footer -->
+	<footer class="page-footer bg-light mt-5">
+
+
+		<div id="liffAppContent" class="container">
+			<!-- ACTION BUTTONS -->
+			<div class="buttonGroup">
+				<button class="btn btn-primary" id="openWindowButton">Open External Window</button>
+				<button class="btn btn-primary" id="closeWindowButton">Close LIFF App</button>
+				<button class="btn btn-primary" id="scanQrCodeButton">Open QR Code Reader</button>
+				<button class="btn btn-primary" id="sendMessageButton">Send Message</button>
+				<button class="btn btn-primary" id="getAccessToken">Get Access Token</button>
+				<button class="btn btn-primary" id="getProfileButton">Get Profile</button>
+			</div>
+			<!-- ACCESS TOKEN DATA -->
+			<div id="accessTokenData" class="hidden textLeft">
+				<h2>Access Token</h2>
+				<a href="#" onclick="toggleAccessToken()">Close Access Token</a>
+				<table>
+					<tr>
+						<th>accessToken</th>
+						<td id="accessTokenField"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- SCAN QR RESULT -->
+			<div id="scanQr" class="hidden textLeft">
+				<h2>QR Code reader</h2>
+				<a href="#" onclick="toggleQRCodeReader()">Close QR Code Reader Result</a>
+				<table>
+					<tr>
+						<th>scanCode Result</th>
+						<td id="scanQrField"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- PROFILE INFO -->
+			<div id="profileInfo" class="hidden textLeft">
+				<h2>Profile</h2>
+				<a href="#" onclick="toggleProfileData()">Close Profile</a>
+				<div id="profilePictureDiv">
+				</div>
+				<table>
+					<tr>
+						<th>userId</th>
+						<td id="userIdProfileField"></td>
+					</tr>
+					<tr>
+						<th>displayName</th>
+						<td id="displayNameField"></td>
+					</tr>
+					<tr>
+						<th>statusMessage</th>
+						<td id="statusMessageField"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- LIFF DATA -->
+			<div id="liffData" class="mt-5">
+				<h2 id="liffDataHeader" class="textLeft">LIFF Data</h2>
+				<table>
+					<tr>
+						<th>OS</th>
+						<td id="deviceOS" class="textLeft"></td>
+					</tr>
+					<tr>
+						<th>Language</th>
+						<td id="browserLanguage" class="textLeft"></td>
+					</tr>
+					<tr>
+						<th>LIFF SDK Version</th>
+						<td id="sdkVersion" class="textLeft"></td>
+					</tr>
+					<tr>
+						<th>isInClient</th>
+						<td id="isInClient" class="textLeft"></td>
+					</tr>
+					<tr>
+						<th>isLoggedIn</th>
+						<td id="isLoggedIn" class="textLeft"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- LOGIN LOGOUT BUTTONS -->
+			<div class="buttonGroup">
+				<button id="liffLoginButton">Log in</button>
+				<button id="liffLogoutButton">Log out</button>
+			</div>
+			<div id="statusMessage">
+				<div id="isInClientMessage"></div>
+				<div id="apiReferenceMessage">
+					<p>Available LIFF methods vary depending on the browser you use to open the LIFF app.</p>
+					<p>Please refer to the <a href="https://developers.line.biz/en/reference/liff/#initialize-liff-app">API reference page</a> for more information.</p>
+				</div>
+			</div>
+		</div>
+		<!-- LIFF ID ERROR -->
+		<div id="liffIdErrorMessage" class="hidden">
+			<p>You have not assigned any value for LIFF ID.</p>
+			<p>If you are running the app using Node.js, please set the LIFF ID as an environment variable in your Heroku account follwing the below steps: </p>
+			<code id="code-block">
+				<ol>
+					<li>Go to `Dashboard` in your Heroku account.</li>
+					<li>Click on the app you just created.</li>
+					<li>Click on `Settings` and toggle `Reveal Config Vars`.</li>
+					<li>Set `MY_LIFF_ID` as the key and the LIFF ID as the value.</li>
+					<li>Your app should be up and running. Enter the URL of your app in a web browser.</li>
+				</ol>
+			</code>
+			<p>If you are using any other platform, please add your LIFF ID in the <code>index.html</code> file.</p>
+			<p>For more information about how to add your LIFF ID, see <a href="https://developers.line.biz/en/reference/liff/#initialize-liff-app">Initializing the LIFF app</a>.</p>
+		</div>
+		<!-- LIFF INIT ERROR -->
+		<div id="liffInitErrorMessage" class="hidden">
+			<p>Something went wrong with LIFF initialization.</p>
+			<p>LIFF initialization can fail if a user clicks "Cancel" on the "Grant permission" screen, or if an error occurs in the process of <code>liff.init()</code>.
+			</div>
+			<!-- NODE.JS LIFF ID ERROR -->
+			<div id="nodeLiffIdErrorMessage" class="hidden">
+				<p>Unable to receive the LIFF ID as an environment variable.</p>
+			</div>		
+
+		</footer>
+		<!-- Footer -->
+
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+		<script src="liff-starter.js"></script>
+		<script src="my_function.js"></script>
+	</body>
+	</html>
